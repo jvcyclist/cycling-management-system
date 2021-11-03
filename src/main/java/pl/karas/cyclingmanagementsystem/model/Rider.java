@@ -2,10 +2,8 @@ package pl.karas.cyclingmanagementsystem.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Entity
@@ -16,4 +14,17 @@ public class Rider {
     private String firstName;
     private String lastName;
     private String licenseNo;
+    private String pesel;
+    private String gender;
+    @ManyToOne
+    private Category category;
+
+    @ManyToOne
+    private Address address;
+
+    @ManyToMany
+    private Set<Achievement> achievements;
+
+    @OneToMany
+    private Set<MedicalCard> medicalCards;
 }
