@@ -16,15 +16,17 @@ public class Rider {
     private String licenseNo;
     private String pesel;
     private String gender;
+    private String phoneNumber;
+    private String mail;
     @ManyToOne
     private Category category;
 
     @ManyToOne
     private Address address;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private Set<Achievement> achievements;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private Set<MedicalCard> medicalCards;
 }

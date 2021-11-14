@@ -24,4 +24,14 @@ public class TrainingServiceImpl implements TrainingService {
     public Training getTrainingById(Long id) {
         return trainingRepository.findById(id).get();
     }
+
+    @Override
+    public Training save(Training training) {
+        return trainingRepository.save(training);
+    }
+
+    @Override
+    public void delete(Long id) {
+        this.trainingRepository.deleteById(id);
+    }
 }

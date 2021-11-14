@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface EquipmentService {
     List<Equipment> getAllEquipment();
+    Equipment saveEquipment(Equipment equipment);
+    Equipment getEquipmentById(Long id);
 }

@@ -2,8 +2,12 @@ package pl.karas.cyclingmanagementsystem.model;
 
 import lombok.Data;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import java.util.Date;
 
 @Data
 @Entity
@@ -13,6 +17,6 @@ public class Accomodation {
     private Long id;
     @ManyToOne
     private Address address;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private Date startDateTime;
+    private Date endDateTime;
 }

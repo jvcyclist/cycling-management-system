@@ -9,4 +9,8 @@ public interface TrainingService {
     List<Training> getAllTrainings();
 
     Training getTrainingById(Long id);
+
+    Training save(Training training);
+
+    void delete(Long id);
 }

@@ -33,4 +33,24 @@ public class TrainingController {
                 : ResponseEntity.badRequest().body("Training with given id not found");
     }
 
+    @PostMapping("/training")
+    public ResponseEntity<Training> saveTraining(@RequestBody Training training){
+        training.setId(null);
+        Training savedRider = this.trainingService.save(training);
+        return ResponseEntity.ok(savedRider);
+    }
+
+    @PutMapping("/training")
+    public ResponseEntity<Training> updateTraining(@RequestBody Training training){
+        Training savedRider = this.trainingService.save(training);
+        return ResponseEntity.ok(savedRider);
+    }
+
+    @DeleteMapping("/training/{id}")
+    public ResponseEntity deleteTraining(@PathVariable String id){
+        this.trainingService.delete(Long.valueOf(id));
+        return ResponseEntity.ok().build();
+    }
+
+
 }

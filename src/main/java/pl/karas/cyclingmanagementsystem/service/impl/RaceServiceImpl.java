@@ -23,5 +23,10 @@ public class RaceServiceImpl implements RaceService {
         return this.raceRepository.findById(id).get();
     }
 
+    @Override
+    public Race save(Race race) {
+        return this.raceRepository.save(race);
+    }
+
 
 }

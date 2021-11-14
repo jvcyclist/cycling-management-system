@@ -7,4 +7,5 @@ import java.util.List;
 public interface RaceService {
     List<Race> getAllRaces();
     Race getRaceById(Long id);
+    Race save(Race race);
 }

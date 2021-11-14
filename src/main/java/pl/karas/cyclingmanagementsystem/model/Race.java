@@ -16,6 +16,7 @@ public class Race {
     private Date startDate;
     private Date endDate;
     private String url;
+    private String status;
     @OneToOne
     private Journey journey;
     @ManyToMany
