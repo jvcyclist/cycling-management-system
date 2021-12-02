@@ -23,4 +23,12 @@ public class AchievementServiceImpl implements AchievementService {
     public List<Achievement> getAll() {
         return this.achievementRepository.findAll();
     }
+
+    @Override
+    public void deleteById(Long id) {
+        this.achievementRepository.deleteById(id);
+    }
+
+
+
 }

@@ -1,16 +1,29 @@
 package pl.karas.cyclingmanagementsystem.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.karas.cyclingmanagementsystem.model.Rider;
 import pl.karas.cyclingmanagementsystem.repository.RiderRepository;
 import pl.karas.cyclingmanagementsystem.service.RiderService;
+import pl.karas.cyclingmanagementsystem.service.config.RaceServiceConfig;
+import pl.karas.cyclingmanagementsystem.service.config.RiderServiceConfig;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class RiderServiceImpl implements RiderService {
+
+    @Autowired
+    private Clock clock;
+
+    @Autowired
+    private RiderServiceConfig riderServiceConfig;
 
     @Autowired
     private RiderRepository riderRepository;
@@ -34,4 +47,28 @@ public class RiderServiceImpl implements RiderService {
     public void deleteRider(Long id) {
         this.riderRepository.deleteById(id);
     }
+
+    @Override
+    public List<Rider> getRidersByCategoryNamesInAuthority() {
+        Set<String> categoryNamesFromAuthority  =
+                    SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                        .map(authority -> authority.getAuthority())
+                        .filter(authorityName -> authorityName.startsWith("ROLE_COACH"))
+                        .map(authorityName -> authorityName.replace("ROLE_COACH_", ""))
+                        .collect(Collectors.toSet());
+
+        return this.riderRepository.findByCategoryNameIn(categoryNamesFromAuthority);
+    }
+
+    @Override
+    public List<Rider> getRidersByCategoryNames(Set<String> categories) {
+        return this.riderRepository.findByCategoryNameIn(categories);
+    }
+
+    @Override
+    public List<Rider> getRidersWithSoonExpirationOfMedicalCard() {
+        return this.riderRepository.findByMedicalCards_ValidToBetween(LocalDate.now(clock), LocalDate.now(this.clock).plusDays(riderServiceConfig.getTimeAhead().toDays()));
+    }
+
+
 }

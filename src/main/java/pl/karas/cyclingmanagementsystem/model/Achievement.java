@@ -1,12 +1,18 @@
 package pl.karas.cyclingmanagementsystem.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
 @Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Achievement {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,4 +22,8 @@ public class Achievement {
     private String description;
     private String place;
     private Date achievementDate;
+    @ManyToOne
+    @JoinColumn(name = "rider_id")
+    private Rider rider;
+
 }

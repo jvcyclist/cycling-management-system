@@ -1,6 +1,7 @@
 package pl.karas.cyclingmanagementsystem.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.karas.cyclingmanagementsystem.model.Training;
 import pl.karas.cyclingmanagementsystem.repository.TrainingRepository;

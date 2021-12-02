@@ -3,7 +3,6 @@ package pl.karas.cyclingmanagementsystem.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.EntityResponse;
 import pl.karas.cyclingmanagementsystem.model.Rider;
 import pl.karas.cyclingmanagementsystem.service.RiderService;
 
@@ -12,15 +11,18 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 public class RiderController {
 
     @Autowired
     private RiderService riderService;
 
     @GetMapping("/rider")
-    public List<Rider> getRiders(){
-        return this.riderService.getAllRiders();
+    public List<Rider> getRiders(@RequestParam(required = false) String mode){
+        if(mode != null && mode.equals("medical-card-soon-expired")){
+            return riderService.getRidersWithSoonExpirationOfMedicalCard();
+        }
+        return this.riderService.getRidersByCategoryNamesInAuthority();
     }
 
     @GetMapping("/rider/{id}")

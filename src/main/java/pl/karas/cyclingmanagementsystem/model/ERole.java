@@ -2,6 +2,8 @@ package pl.karas.cyclingmanagementsystem.model;
 
 public enum ERole {
     ROLE_ADMIN,
+    ROLE_MODERATOR,
+    ROLE_USER,
     ROLE_COACH_ZAK,
     ROLE_COACH_ZAKINI,
     ROLE_COACH_MLODZIK,

@@ -9,11 +9,9 @@ import pl.karas.cyclingmanagementsystem.model.Rider;
 import pl.karas.cyclingmanagementsystem.service.AchievementService;
 import pl.karas.cyclingmanagementsystem.service.RiderService;
 
-import java.util.Comparator;
-
 @RequestMapping("/api")
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 public class AchievementController {
 
     @Autowired

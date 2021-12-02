@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.karas.cyclingmanagementsystem.model.Race;
-import pl.karas.cyclingmanagementsystem.model.Rider;
 import pl.karas.cyclingmanagementsystem.service.RaceService;
 
 import java.util.List;
@@ -19,7 +18,10 @@ public class RaceController {
     RaceService raceService;
 
     @GetMapping("/races")
-    public List<Race> getAllRaces(){
+    public List<Race> getAllRaces(@RequestParam(required = false) String mode){
+        if(mode != null && mode.equals("nearest-races")){
+            return this.raceService.getNearestRaces();
+        }
         return this.raceService.getAllRaces();
     }
 
@@ -30,4 +32,7 @@ public class RaceController {
                 ResponseEntity.ok(riderByIdOpt.get())
                 : ResponseEntity.badRequest().body("Race with given id not found");
     }
+
+
+
 }

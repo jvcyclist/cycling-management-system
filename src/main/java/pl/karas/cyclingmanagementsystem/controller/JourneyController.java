@@ -1,9 +1,13 @@
 package pl.karas.cyclingmanagementsystem.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import pl.karas.cyclingmanagementsystem.model.Journey;
 import pl.karas.cyclingmanagementsystem.model.Race;
 import pl.karas.cyclingmanagementsystem.service.JourneyService;
@@ -13,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 public class JourneyController {
 
     @Autowired

@@ -1,12 +1,20 @@
 package pl.karas.cyclingmanagementsystem.model;
 
+import com.fasterxml.jackson.annotation.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Rider {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,6 +35,7 @@ public class Rider {
     @ManyToMany(cascade = {CascadeType.ALL})
     private Set<Achievement> achievements;
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    private Set<MedicalCard> medicalCards;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "rider", targetEntity = MedicalCard.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<MedicalCard> medicalCards;
 }

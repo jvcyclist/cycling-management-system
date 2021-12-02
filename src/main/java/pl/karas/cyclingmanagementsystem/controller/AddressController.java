@@ -1,16 +1,18 @@
 package pl.karas.cyclingmanagementsystem.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pl.karas.cyclingmanagementsystem.model.Address;
-import pl.karas.cyclingmanagementsystem.model.Training;
 import pl.karas.cyclingmanagementsystem.service.AddressService;
 
 @RequestMapping("/api")
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 public class AddressController {
 
     @Autowired
