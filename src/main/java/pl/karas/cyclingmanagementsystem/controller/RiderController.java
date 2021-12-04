@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.karas.cyclingmanagementsystem.model.Rider;
 import pl.karas.cyclingmanagementsystem.service.RiderService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,9 @@ public class RiderController {
     @GetMapping("/rider")
     public List<Rider> getRiders(@RequestParam(required = false) String mode){
         if(mode != null && mode.equals("medical-card-soon-expired")){
-            return riderService.getRidersWithSoonExpirationOfMedicalCard();
+            List<Rider> riders = new ArrayList<>();
+            riders.addAll(riderService.getRidersWithSoonExpirationOfMedicalCard());
+            return riders;
         }
         return this.riderService.getRidersByCategoryNamesInAuthority();
     }

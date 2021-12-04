@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -32,10 +36,16 @@ public class Rider {
     @ManyToOne
     private Address address;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    private Set<Achievement> achievements;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "rider", targetEntity = Achievement.class, cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Achievement> achievements;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "rider", targetEntity = MedicalCard.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<MedicalCard> medicalCards;
+
+    @ManyToMany()
+    private List<Journey> journeys;
+
 }

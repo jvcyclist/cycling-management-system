@@ -9,6 +9,8 @@ import pl.karas.cyclingmanagementsystem.model.Rider;
 import pl.karas.cyclingmanagementsystem.service.AchievementService;
 import pl.karas.cyclingmanagementsystem.service.RiderService;
 
+import java.util.Optional;
+
 @RequestMapping("/api")
 @RestController
 @CrossOrigin
@@ -21,6 +23,10 @@ public class AchievementController {
 
     @PutMapping("/achievement")
     public ResponseEntity<Achievement> updateAchievement(@RequestBody Achievement achievement) {
+        Optional<Rider> riderByAchievement = riderService.getRiderByAchievementId(achievement.getId());
+        if(riderByAchievement.isPresent()) {
+            achievement.setRider(riderByAchievement.get());
+        }
         Achievement savedAchievement = this.achievementService.save(achievement);
         return ResponseEntity.ok(savedAchievement);
     }
@@ -28,8 +34,10 @@ public class AchievementController {
     @PostMapping("/achievement")
     public ResponseEntity<Achievement> saveAchievementByRiderId(@RequestBody Achievement achievement, @RequestParam String riderId) {
         Rider rider = this.riderService.getRiderById(Long.valueOf(riderId));
-        rider.getAchievements().add(achievement);
-        this.riderService.save(rider);
+
+        achievement.setRider(rider);
+        achievementService.save(achievement);
+
         return ResponseEntity.ok(achievement);
     }
 

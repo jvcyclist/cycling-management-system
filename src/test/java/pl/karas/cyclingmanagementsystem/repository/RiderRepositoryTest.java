@@ -1,5 +1,6 @@
 package pl.karas.cyclingmanagementsystem.repository;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.runner.RunWith;
@@ -10,12 +11,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import pl.karas.cyclingmanagementsystem.CyclingManagementSystemApplication;
 import pl.karas.cyclingmanagementsystem.model.Category;
+import pl.karas.cyclingmanagementsystem.model.Journey;
 import pl.karas.cyclingmanagementsystem.model.MedicalCard;
 import pl.karas.cyclingmanagementsystem.model.Rider;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.LongStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -24,6 +27,7 @@ import static org.hamcrest.Matchers.is;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CyclingManagementSystemApplication.class)
 @ActiveProfiles(profiles = "unit")
+@Slf4j
 public class RiderRepositoryTest {
 
     @Autowired
@@ -34,6 +38,9 @@ public class RiderRepositoryTest {
 
     @Autowired
     MedicalCardRepository medicalCardRepository;
+
+    @Autowired
+    JourneyRepository journeyRepository;
 
     @AfterEach()
     public void tearDown(){
@@ -132,17 +139,71 @@ public class RiderRepositoryTest {
         riderRepository.saveAll(riders);
         medicalCardRepository.saveAll(medicalCards);
 
-        List<Rider> ridersWithSoonExpirationOfMedicalCards = riderRepository.findByMedicalCards_ValidToBetween(LocalDate.of(2021, 04, 1), LocalDate.of(2021, 06, 1));
+        Set<Rider> ridersWithSoonExpirationOfMedicalCards = riderRepository.findByMedicalCards_ValidToBetween(LocalDate.of(2021, 04, 1), LocalDate.of(2021, 06, 1));
 
         assertThat(ridersWithSoonExpirationOfMedicalCards.size(), is(4));
 
 
     };
 
+    @Test
+    public void oneRiderAssociatedToJourney_findByJourneyId_oneRiderReturned(){
+        //given
+        Long journeyId = 1L;
+        Rider firstRider = Rider.builder()
+                .id(1L)
+                .firstName("ADAM")
+                .build();
 
+        riderRepository.save(firstRider);
 
+        Rider secondRider = Rider.builder()
+                .id(2L)
+                .firstName("PATRYK")
+                .build();
 
+        Rider savedSecondRider = riderRepository.save(secondRider);
 
+        Journey journey = Journey.builder()
+                        .riders(List.of(savedSecondRider))
+                        .build();
 
+        //when
+        Journey savedJourney = journeyRepository.save(journey);
+        List<Rider> ridersAssociatedWithJourney = riderRepository.findByJourneys_Id(journeyId);
+
+        //then
+        assertThat(ridersAssociatedWithJourney.size(), is(1));
+        assertThat(ridersAssociatedWithJourney.get(0).getFirstName(), is("ADAM"));
+    }
+
+    @Test
+    public void twoRidersTwoMedicalCards_findRiderByMedicalCardId_returnOneRider(){
+        //given
+        Rider firstRider = Rider.builder()
+                .firstName("PATRYK")
+                .build();
+
+        Rider secondRider = Rider.builder()
+                .firstName("ADAM")
+                .build();
+
+        riderRepository.saveAll(Set.of(firstRider, secondRider));
+
+        MedicalCard firstRiderMedicalCard = MedicalCard.builder()
+                .rider(firstRider)
+                .build();
+
+        MedicalCard secondRiderMedicalCard = MedicalCard.builder()
+                .rider(secondRider)
+                .build();
+
+        //when
+        MedicalCard firstSavedMedicalCard = medicalCardRepository.save(firstRiderMedicalCard);
+        MedicalCard secondSavedMedicalCard = medicalCardRepository.save(secondRiderMedicalCard);
+
+        //then
+        assertThat(riderRepository.findByMedicalCards_Id(firstSavedMedicalCard.getId()).get().getFirstName(), is("PATRYK"));
+    }
 
 }

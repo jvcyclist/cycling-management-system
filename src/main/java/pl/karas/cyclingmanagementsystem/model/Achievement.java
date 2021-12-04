@@ -1,5 +1,6 @@
 package pl.karas.cyclingmanagementsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,8 +23,10 @@ public class Achievement {
     private String description;
     private String place;
     private Date achievementDate;
+
+    @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "rider_id")
+    @JoinColumn(name="rider_id")
     private Rider rider;
 
 }

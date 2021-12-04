@@ -66,8 +66,18 @@ public class RiderServiceImpl implements RiderService {
     }
 
     @Override
-    public List<Rider> getRidersWithSoonExpirationOfMedicalCard() {
+    public Set<Rider> getRidersWithSoonExpirationOfMedicalCard() {
         return this.riderRepository.findByMedicalCards_ValidToBetween(LocalDate.now(clock), LocalDate.now(this.clock).plusDays(riderServiceConfig.getTimeAhead().toDays()));
+    }
+
+    @Override
+    public Optional<Rider> getRiderByMedicalCardId(Long id) {
+        return this.riderRepository.findByMedicalCards_Id(id);
+    }
+
+    @Override
+    public Optional<Rider> getRiderByAchievementId(Long id) {
+        return this.riderRepository.findByMedicalCards_Id(id);
     }
 
 

@@ -3,6 +3,7 @@ package pl.karas.cyclingmanagementsystem.service;
 import pl.karas.cyclingmanagementsystem.model.Rider;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -20,5 +21,7 @@ public interface RiderService {
 
     List<Rider> getRidersByCategoryNames(Set<String> categories);
 
-    List<Rider> getRidersWithSoonExpirationOfMedicalCard();
+    Set<Rider> getRidersWithSoonExpirationOfMedicalCard();
+    Optional<Rider> getRiderByMedicalCardId(Long id);
+    Optional<Rider> getRiderByAchievementId(Long id);
 }
