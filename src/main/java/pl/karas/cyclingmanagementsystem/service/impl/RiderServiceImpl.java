@@ -34,8 +34,8 @@ public class RiderServiceImpl implements RiderService {
     }
 
     @Override
-    public Rider getRiderById(Long id) {
-        return this.riderRepository.findById(id).get();
+    public Optional<Rider> getRiderById(Long id) {
+        return this.riderRepository.findById(id);
     }
 
     @Override

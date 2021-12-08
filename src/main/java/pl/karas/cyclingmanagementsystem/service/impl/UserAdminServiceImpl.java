@@ -29,4 +29,10 @@ public class UserAdminServiceImpl implements UserAdminService {
     public User updateUser(User user) {
         return userRepository.save(user);
     }
+
+    @Override
+    public void deleteUser(User user) {
+        userRepository.delete(user);
+    }
+
 }

@@ -18,7 +18,7 @@ public class AddressController {
     @Autowired
     AddressService addressService;
 
-    @PutMapping("/address")
+    @PutMapping("/addresses")
     public ResponseEntity<Address> updateAddress(@RequestBody Address address){
         Address savedAddress = this.addressService.save(address);
         return ResponseEntity.ok(savedAddress);

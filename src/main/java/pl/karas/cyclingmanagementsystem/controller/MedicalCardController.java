@@ -2,13 +2,7 @@ package pl.karas.cyclingmanagementsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.karas.cyclingmanagementsystem.model.MedicalCard;
 import pl.karas.cyclingmanagementsystem.model.Rider;
 import pl.karas.cyclingmanagementsystem.service.MedicalCardService;
@@ -26,7 +20,7 @@ public class MedicalCardController {
     @Autowired
     RiderService riderService;
 
-    @PutMapping("/medical-card")
+    @PutMapping("/medical-cards")
     public ResponseEntity<MedicalCard> updateMedicalCard(@RequestBody MedicalCard medicalCard){
         Optional<Rider> riderByMedicalCardId = riderService.getRiderByMedicalCardId(medicalCard.getId());
         if(riderByMedicalCardId.isPresent()) {
@@ -36,15 +30,26 @@ public class MedicalCardController {
         return ResponseEntity.ok(savedMedicalCard);
     }
 
-    @PostMapping("/medical-card")
+    @PostMapping("/medical-cards")
     public ResponseEntity<MedicalCard> saveMedicalCardByRiderId(@RequestBody MedicalCard medicalCard, @RequestParam String riderId) {
-        Rider rider = this.riderService.getRiderById(Long.valueOf(riderId));
-
-        medicalCard.setRider(rider);
+        Optional<Rider> optRider = this.riderService.getRiderById(Long.valueOf(riderId));
+        if(optRider.isPresent()){
+            Rider rider = optRider.get();
+            medicalCard.setRider(rider);
+        }
         medicalCardService.save(medicalCard);
 
         return ResponseEntity.ok(medicalCard);
     }
 
+    @DeleteMapping("/medical-cards/{id}")
+    public ResponseEntity<String> deleteMedicalCardById (@PathVariable String id) {
+        Optional<MedicalCard> optionalMedicalCard = medicalCardService.getMedicalCardById(Long.valueOf(id));
+        if(optionalMedicalCard.isPresent()) {
+            medicalCardService.deleteMedicalCard(optionalMedicalCard.get());
+        } else {
+            return ResponseEntity.badRequest().body("Medical Card with given ID doesn't exist");
+        }
+        return ResponseEntity.ok().build();
+    }
 }
-

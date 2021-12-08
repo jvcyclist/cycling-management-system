@@ -34,4 +34,17 @@ public class AdminUserController {
         return ResponseEntity.ok(optUserById.get());
     }
 
+    //deleteUserMapping
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity deleteUserById(@PathVariable String id){
+        Optional<User> optUserById = userAdminService.getUserById(Long.valueOf(id));
+        if (optUserById.isPresent()) {
+
+        }
+
+        return ResponseEntity.ok(optUserById.get());
+    }
+
 }

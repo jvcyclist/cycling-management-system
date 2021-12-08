@@ -36,7 +36,7 @@ import pl.karas.cyclingmanagementsystem.service.EmailSenderService;
 import static pl.karas.cyclingmanagementsystem.utils.MapStringRoleUtil.mapStringERole;
 
 @Slf4j
-@CrossOrigin()
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

@@ -7,6 +7,7 @@ import pl.karas.cyclingmanagementsystem.repository.AchievementRepository;
 import pl.karas.cyclingmanagementsystem.service.AchievementService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AchievementServiceImpl implements AchievementService {
@@ -25,10 +26,17 @@ public class AchievementServiceImpl implements AchievementService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteAchievementById(Long id) {
         this.achievementRepository.deleteById(id);
     }
 
+    @Override
+    public void deleteAchievement(Achievement achievement) {
+        this.achievementRepository.delete(achievement);
+    }
 
-
+    @Override
+    public Optional<Achievement> getAchievementById(Long id) {
+        return this.achievementRepository.findById(id);
+    }
 }

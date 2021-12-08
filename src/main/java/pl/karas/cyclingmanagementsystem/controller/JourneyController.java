@@ -26,21 +26,24 @@ public class JourneyController {
     @Autowired
     JourneyService journeyService;
 
-    @PutMapping("/journey")
+    @PutMapping("/journeys")
     ResponseEntity<Journey> saveJourney(@RequestBody Journey journey, @RequestParam String raceId){
 
-        Optional<Journey> raceJourney = Optional.of(raceService.getRaceById(Long.valueOf(raceId)).getJourney());
+        Optional<Journey> raceJourney = Optional.of(raceService.getRaceById(Long.valueOf(raceId)).get().getJourney());
         if(raceJourney.isPresent()){
             Journey savedJourney = journeyService.save(journey);
             return ResponseEntity.ok(savedJourney);
         } else {
-            Race race = raceService.getRaceById(Long.valueOf(raceId));
-            race.setJourney(journey);
-            raceService.save(race);
-            Journey savedJourney = raceService.getRaceById(Long.valueOf(raceId)).getJourney();
-            return ResponseEntity.ok(savedJourney);
+            Optional<Race> optRace = raceService.getRaceById(Long.valueOf(raceId));
+            if(optRace.isPresent()){
+                Race race = optRace.get();
+                race.setJourney(journey);
+                raceService.save(race);
+                Journey savedJourney = raceService.getRaceById(Long.valueOf(raceId)).get().getJourney();
+                return ResponseEntity.ok(savedJourney);
+            }
+
         }
-
+        return ResponseEntity.badRequest().build();
     }
-
 }

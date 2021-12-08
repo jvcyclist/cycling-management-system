@@ -19,13 +19,13 @@ public class TrainingController {
     @Autowired
     TrainingService trainingService;
 
-    @GetMapping("/training")
+    @GetMapping("/trainings")
     List<Training> getAllTrainings(){
         return trainingService.getAllTrainings();
     }
 
 
-    @GetMapping("/training/{id}")
+    @GetMapping("/trainings/{id}")
     public ResponseEntity getTrainingById(@PathVariable String id) {
         Optional<Training> trainingByIdOpt = Optional.of(this.trainingService.getTrainingById(Long.valueOf(id)));
         return trainingByIdOpt.isPresent() ?
@@ -33,20 +33,20 @@ public class TrainingController {
                 : ResponseEntity.badRequest().body("Training with given id not found");
     }
 
-    @PostMapping("/training")
+    @PostMapping("/trainings")
     public ResponseEntity<Training> saveTraining(@RequestBody Training training){
         training.setId(null);
         Training savedRider = this.trainingService.save(training);
         return ResponseEntity.ok(savedRider);
     }
 
-    @PutMapping("/training")
+    @PutMapping("/trainings")
     public ResponseEntity<Training> updateTraining(@RequestBody Training training){
         Training savedRider = this.trainingService.save(training);
         return ResponseEntity.ok(savedRider);
     }
 
-    @DeleteMapping("/training/{id}")
+    @DeleteMapping("/trainings/{id}")
     public ResponseEntity deleteTraining(@PathVariable String id){
         this.trainingService.delete(Long.valueOf(id));
         return ResponseEntity.ok().build();

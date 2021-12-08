@@ -11,7 +11,7 @@ public interface RiderService {
 
     List<Rider> getAllRiders();
 
-    Rider getRiderById(Long id);
+    Optional<Rider> getRiderById(Long id);
 
     Rider save(Rider rider);
 

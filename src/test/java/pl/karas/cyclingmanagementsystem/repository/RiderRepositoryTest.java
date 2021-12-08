@@ -97,10 +97,8 @@ public class RiderRepositoryTest {
     }
 
     @Test
-    public void findByMedicalCards_ValidToBetween() {
-        //3 zawodnikow
-        // 2 z nich powinno sie konczyc ostatnie badanie w przeciagu
-
+    public void fourRidersInDateRangeAndTwoRidersOutOfRange_findByMedicalCardsValidToBetween_FourRidersExpected() {
+        //given
         LocalDate expirationDateInRange = LocalDate.of(2021, 5, 1);
         LocalDate expirationDateOutOfRange = LocalDate.of(2021, 9, 1);
 
@@ -136,14 +134,14 @@ public class RiderRepositoryTest {
             );
         });
 
+        //when
         riderRepository.saveAll(riders);
         medicalCardRepository.saveAll(medicalCards);
 
         Set<Rider> ridersWithSoonExpirationOfMedicalCards = riderRepository.findByMedicalCards_ValidToBetween(LocalDate.of(2021, 04, 1), LocalDate.of(2021, 06, 1));
 
+        //then
         assertThat(ridersWithSoonExpirationOfMedicalCards.size(), is(4));
-
-
     };
 
     @Test

@@ -50,8 +50,8 @@ class RaceServiceImplTest {
     }
 
     @Test
-    void getNearestRaces() {
-
+    void twoRacesOutOfDateRangeOneInDateRange_getNearestRaces_oneRaceExpected() {
+        //given
         Race raceInDateRange =  Race.builder()
                 .id(1L)
                 .startDate(LocalDate.of(2021, 4, 12))

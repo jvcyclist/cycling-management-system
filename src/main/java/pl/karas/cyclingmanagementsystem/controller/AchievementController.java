@@ -21,7 +21,7 @@ public class AchievementController {
     @Autowired
     RiderService riderService;
 
-    @PutMapping("/achievement")
+    @PutMapping("/achievements")
     public ResponseEntity<Achievement> updateAchievement(@RequestBody Achievement achievement) {
         Optional<Rider> riderByAchievement = riderService.getRiderByAchievementId(achievement.getId());
         if(riderByAchievement.isPresent()) {
@@ -31,14 +31,25 @@ public class AchievementController {
         return ResponseEntity.ok(savedAchievement);
     }
 
-    @PostMapping("/achievement")
+    @PostMapping("/achievements")
     public ResponseEntity<Achievement> saveAchievementByRiderId(@RequestBody Achievement achievement, @RequestParam String riderId) {
-        Rider rider = this.riderService.getRiderById(Long.valueOf(riderId));
-
-        achievement.setRider(rider);
-        achievementService.save(achievement);
-
+        Optional<Rider> optRider = riderService.getRiderById(Long.valueOf(riderId));
+        if (optRider.isPresent()){
+            achievement.setRider(optRider.get());
+            achievementService.save(achievement);
+        }
         return ResponseEntity.ok(achievement);
+    }
+
+    @DeleteMapping("/achievements/{id}")
+    public ResponseEntity<String> deleteAchievementById(@PathVariable String id){
+        Optional<Achievement> optAchievement = achievementService.getAchievementById(Long.valueOf(id));
+        if(optAchievement.isPresent())
+        {
+            achievementService.deleteAchievementById(Long.valueOf(id));
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().body("Achievement with given ID doesn't exist");
     }
 
 }

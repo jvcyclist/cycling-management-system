@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface AchievementService {
     Achievement save(Achievement achievement);
     List<Achievement> getAll();
-    void deleteById(Long id);
+    void deleteAchievementById(Long id);
+    void deleteAchievement(Achievement achievement);
+    Optional<Achievement> getAchievementById(Long id);
 
 }

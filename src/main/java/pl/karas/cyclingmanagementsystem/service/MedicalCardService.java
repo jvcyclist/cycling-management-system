@@ -8,4 +8,6 @@ public interface MedicalCardService {
 
     MedicalCard save(MedicalCard medicalCard);
     Optional<MedicalCard> getMedicalCardById(Long id);
+    void deleteMedicalCardById(Long id);
+    void deleteMedicalCard(MedicalCard medicalCard);
 }

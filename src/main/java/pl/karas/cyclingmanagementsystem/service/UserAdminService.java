@@ -11,5 +11,6 @@ public interface UserAdminService {
     List<User> getAllUsers();
     Optional<User> getUserById(Long id);
     User updateUser(User user);
+    void deleteUser(User user);
 
 }

@@ -37,12 +37,12 @@ public class Rider {
     private Address address;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "rider", targetEntity = Achievement.class, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "rider", targetEntity = Achievement.class)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Achievement> achievements;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "rider", targetEntity = MedicalCard.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "rider", targetEntity = MedicalCard.class)
     private List<MedicalCard> medicalCards;
 
     @ManyToMany()

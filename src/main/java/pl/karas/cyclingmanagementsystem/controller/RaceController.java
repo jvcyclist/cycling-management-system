@@ -38,7 +38,7 @@ public class RaceController {
 
     @GetMapping("/races/{id}")
     public ResponseEntity getRaceById(@PathVariable String id) {
-        Optional<Race> riderByIdOpt = Optional.of(this.raceService.getRaceById(Long.valueOf(id)));
+        Optional<Race> riderByIdOpt = this.raceService.getRaceById(Long.valueOf(id));
         return riderByIdOpt.isPresent() ?
                 ResponseEntity.ok(riderByIdOpt.get())
                 : ResponseEntity.badRequest().body("Race with given id not found");
@@ -67,6 +67,11 @@ public class RaceController {
         return ResponseEntity.ok(updatedRace);
     }
 
+    @DeleteMapping("/races/{id}")
+    public ResponseEntity<String> deleteRaceById(@PathVariable Long id){
+        raceService.getRaceById(Long.valueOf(id));
+        return ResponseEntity.ok().build();
+    }
 
 
 
