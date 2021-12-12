@@ -1,7 +1,6 @@
 package pl.karas.cyclingmanagementsystem.repository;
 
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,9 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pl.karas.cyclingmanagementsystem.CyclingManagementSystemApplication;
 import pl.karas.cyclingmanagementsystem.model.Race;
 
-import javax.xml.crypto.Data;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 

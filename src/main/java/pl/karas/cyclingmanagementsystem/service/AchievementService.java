@@ -11,5 +11,6 @@ public interface AchievementService {
     void deleteAchievementById(Long id);
     void deleteAchievement(Achievement achievement);
     Optional<Achievement> getAchievementById(Long id);
+    List<Achievement> findByAchievementByThisYearAndRiderId(Long riderId);
 
 }

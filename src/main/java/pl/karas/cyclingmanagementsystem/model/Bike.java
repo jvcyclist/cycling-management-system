@@ -24,6 +24,6 @@ public class Bike {
     private String type;
 
     @OneToMany(mappedBy = "bike")
-    List<BikeUsageHistory> bikeUsageHistories;
+    private List<BikeUsageHistory> bikeUsageHistories;
 
 }

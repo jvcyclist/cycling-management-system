@@ -37,11 +37,14 @@ class RaceServiceImplTest {
     @MockBean
     private RaceRepository raceRepository;
 
-    private final static LocalDate LOCAL_DATE = LocalDate.of(2021, 04, 11);
+
+
+
     private Clock fixedClock;
 
     @BeforeEach
     public void initMocks() {
+        LocalDate LOCAL_DATE = LocalDate.of(2021, 04, 11);
         MockitoAnnotations.openMocks(this);
         fixedClock = Clock.fixed(LOCAL_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
         doReturn(fixedClock.instant()).when(clock).instant();

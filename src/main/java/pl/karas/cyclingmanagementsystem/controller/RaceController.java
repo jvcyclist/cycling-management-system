@@ -3,10 +3,8 @@ package pl.karas.cyclingmanagementsystem.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.karas.cyclingmanagementsystem.model.Accomodation;
-import pl.karas.cyclingmanagementsystem.model.Journey;
-import pl.karas.cyclingmanagementsystem.model.Race;
-import pl.karas.cyclingmanagementsystem.model.Rider;
+import pl.karas.cyclingmanagementsystem.model.*;
+import pl.karas.cyclingmanagementsystem.repository.AddressRepository;
 import pl.karas.cyclingmanagementsystem.service.AccomodationService;
 import pl.karas.cyclingmanagementsystem.service.JourneyService;
 import pl.karas.cyclingmanagementsystem.service.RaceService;
@@ -28,6 +26,9 @@ public class RaceController {
     @Autowired
     AccomodationService accomodationService;
 
+    @Autowired
+    AddressRepository addressRepository;
+
     @GetMapping("/races")
     public List<Race> getAllRaces(@RequestParam(required = false) String mode){
         if(mode != null && mode.equals("nearest-races")){
@@ -46,7 +47,12 @@ public class RaceController {
 
     @PostMapping("/races")
     public ResponseEntity<Race> saveRace(@RequestBody Race race){
+        Address address = new Address();
+        Address savedAddress = this.addressRepository.save(address);
+
+
         Accomodation accomodation = new Accomodation();
+        accomodation.setAddress(savedAddress);
         Accomodation savedAccomodation = accomodationService.save(accomodation);
 
         Journey journey = Journey.builder()

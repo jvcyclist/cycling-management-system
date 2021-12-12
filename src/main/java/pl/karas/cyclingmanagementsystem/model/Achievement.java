@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -22,7 +23,7 @@ public class Achievement {
     private String city;
     private String description;
     private String place;
-    private Date achievementDate;
+    private LocalDate achievementDate;
 
     @JsonBackReference
     @ManyToOne

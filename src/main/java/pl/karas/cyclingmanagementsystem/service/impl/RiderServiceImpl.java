@@ -77,7 +77,7 @@ public class RiderServiceImpl implements RiderService {
 
     @Override
     public Optional<Rider> getRiderByAchievementId(Long id) {
-        return this.riderRepository.findByMedicalCards_Id(id);
+        return this.riderRepository.findByAchievements_Id(id);
     }
 
 
