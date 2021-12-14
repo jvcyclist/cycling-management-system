@@ -12,6 +12,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -46,6 +47,9 @@ public class Rider {
     private List<MedicalCard> medicalCards;
 
     @ManyToMany()
+    @JoinTable(name = "Rider_Journeys",
+            joinColumns = {@JoinColumn(name = "rider_id")},
+            inverseJoinColumns = {@JoinColumn(name = "journeys_id")})
     private List<Journey> journeys;
 
 }

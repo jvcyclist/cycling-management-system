@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.karas.cyclingmanagementsystem.model.Journey;
 import pl.karas.cyclingmanagementsystem.model.Race;
 import pl.karas.cyclingmanagementsystem.model.Address;
+import pl.karas.cyclingmanagementsystem.service.AccomodationService;
 import pl.karas.cyclingmanagementsystem.service.AddressService;
 import pl.karas.cyclingmanagementsystem.service.JourneyService;
 import pl.karas.cyclingmanagementsystem.service.RaceService;
@@ -33,6 +34,9 @@ public class JourneyController {
     @Autowired
     AddressService addressService;
 
+    @Autowired
+    AccomodationService accomodationService;
+
     @PutMapping("/journeys")
     ResponseEntity<Journey> saveJourney(@RequestBody Journey journey, @RequestParam String raceId){
 
@@ -42,6 +46,8 @@ public class JourneyController {
             log.info("saveJourney:: raceJourneyIsPresent ", journey.getAccomodation().getAddress().getBuildingNumber());
 
             this.addressService.save(journey.getAccomodation().getAddress());
+
+            this.accomodationService.save(journey.getAccomodation());
 
             Journey savedJourney = journeyService.save(journey);
             return ResponseEntity.ok(savedJourney);

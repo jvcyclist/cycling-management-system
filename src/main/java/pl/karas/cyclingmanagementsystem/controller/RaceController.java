@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.*;
 import pl.karas.cyclingmanagementsystem.model.*;
 import pl.karas.cyclingmanagementsystem.repository.AddressRepository;
 import pl.karas.cyclingmanagementsystem.service.AccomodationService;
+import pl.karas.cyclingmanagementsystem.service.CategoryService;
 import pl.karas.cyclingmanagementsystem.service.JourneyService;
 import pl.karas.cyclingmanagementsystem.service.RaceService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequestMapping("/api")
 @RestController
@@ -28,6 +28,9 @@ public class RaceController {
 
     @Autowired
     AddressRepository addressRepository;
+
+    @Autowired
+    CategoryService categoryService;
 
     @GetMapping("/races")
     public List<Race> getAllRaces(@RequestParam(required = false) String mode){
@@ -69,6 +72,16 @@ public class RaceController {
 
     @PutMapping("/races")
     public ResponseEntity<Race> updateRace(@RequestBody Race race){
+        if(race.getCategories() != null){
+            Set<Category> categoriesToSave = new HashSet<>();
+            race.getCategories().forEach(cat -> {
+            Optional<Category> category = this.categoryService.getCategoryByName(cat.getName());
+            if(category.isPresent()){
+                categoriesToSave.add(category.get());
+            }
+            });
+            race.setCategories(categoriesToSave);
+        }
         Race updatedRace = this.raceService.save(race);
         return ResponseEntity.ok(updatedRace);
     }
