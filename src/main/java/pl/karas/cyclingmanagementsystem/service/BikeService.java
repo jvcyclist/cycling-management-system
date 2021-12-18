@@ -7,7 +7,10 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface BikeService {
+    List<Bike> getAllBikes();
     Optional<Bike> getBikeById(Long id);
-    List<Bike> getBikesByCurrentUserId(Long userId);
-    List<Bike> getFreeBikes(Set<String> bikeTypes);
+    List<Bike> getBikesByCurrentRiderId(Long riderId);
+    List<Bike> getAvailableBikes(Set<String> bikeTypes);
+    Bike saveBike(Bike bike);
+    void deleteBikeById(Long id);
 }

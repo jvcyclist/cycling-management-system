@@ -5,10 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.karas.cyclingmanagementsystem.model.*;
 import pl.karas.cyclingmanagementsystem.repository.AddressRepository;
-import pl.karas.cyclingmanagementsystem.service.AccomodationService;
-import pl.karas.cyclingmanagementsystem.service.CategoryService;
-import pl.karas.cyclingmanagementsystem.service.JourneyService;
-import pl.karas.cyclingmanagementsystem.service.RaceService;
+import pl.karas.cyclingmanagementsystem.service.*;
 
 import java.util.*;
 
@@ -16,6 +13,9 @@ import java.util.*;
 @RestController
 @CrossOrigin
 public class RaceController {
+
+    @Autowired
+    RiderService riderService;
 
     @Autowired
     RaceService raceService;
@@ -92,6 +92,24 @@ public class RaceController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/races/{id}/riders")
+    public ResponseEntity<Race> updateRidersOfRace(@PathVariable Long id, @RequestBody List<Rider> riders){
+        Optional<Race> optRace = raceService.getRaceById(id);
+        if(optRace.isPresent()) {
+            Race raceToUpdate = optRace.get();
+
+        List<Rider> ridersToSave = new ArrayList<>();
+            riders.forEach(rider -> {
+                Optional<Rider> optRider = this.riderService.getRiderById(rider.getId());
+                if(optRider.isPresent()){
+                    ridersToSave.add(rider);
+                }
+            });
+            raceToUpdate.getJourney().setRiders(ridersToSave);
+            this.raceService.save(raceToUpdate);
+        }
+        return ResponseEntity.ok(null);
+    }
 
 
 

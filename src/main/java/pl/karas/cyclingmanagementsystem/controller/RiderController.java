@@ -9,9 +9,7 @@ import pl.karas.cyclingmanagementsystem.model.Rider;
 import pl.karas.cyclingmanagementsystem.service.CategoryService;
 import pl.karas.cyclingmanagementsystem.service.RiderService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -26,12 +24,21 @@ public class RiderController {
     private CategoryService categoryService;
 
     @GetMapping("/riders")
-    public List<Rider> getRiders(@RequestParam(required = false) String mode){
+    public List<Rider> getRiders(@RequestParam(required = false) String mode, @RequestParam(required = false) List<String> categories){
         if(mode != null && mode.equals("medical-card-soon-expired")){
             List<Rider> riders = new ArrayList<>();
             riders.addAll(riderService.getRidersWithSoonExpirationOfMedicalCard());
             return riders;
         }
+        if(categories != null && !categories.isEmpty()) {
+            log.info("getRiders:: Got request with categories {}", categories);
+          List<Rider> foundRiders = riderService.getRidersByCategoryNames(new HashSet<>(categories));
+          if(!foundRiders.isEmpty()) {
+              log.info("getRiders:: Found {} Riders", foundRiders.size());
+              return foundRiders;
+          }
+        }
+
         return this.riderService.getRidersByCategoryNamesInAuthority();
     }
 
@@ -59,8 +66,8 @@ public class RiderController {
     }
 
     @PutMapping("/riders")
-    public ResponseEntity<Rider> updateRider(@RequestBody Rider rider){
-            log.info("RiderController::updateRider: got Rider with ID: {}", rider.getId());
+    public ResponseEntity<Rider> updateRider(@RequestBody Rider rider) {
+        log.info("RiderController::updateRider: got Rider with ID: {}", rider.getId());
         Optional<Rider> foundRiderOpt = this.riderService.getRiderById(rider.getId());
         if(foundRiderOpt.isPresent()){
             log.info("RiderController::updateRider: Found Rider in repository");
