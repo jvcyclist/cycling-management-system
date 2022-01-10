@@ -10,4 +10,5 @@ public interface RaceService {
     Optional<Race> getRaceById(Long id);
     Race save(Race race);
     List<Race> getNearestRaces();
+    void deleteById(Long id);
 }

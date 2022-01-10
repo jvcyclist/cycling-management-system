@@ -54,6 +54,10 @@ public class BikeController {
 
     @PutMapping("/bikes")
     public ResponseEntity<Bike> updateBike(@RequestBody Bike bike) {
+        Optional<Bike> foundBike = this.bikeService.getBikeById(bike.getId());
+        if(foundBike.isPresent()) {
+            bike.setBikeUsageHistories(foundBike.get().getBikeUsageHistories());
+        }
         Bike savedBike = bikeService.saveBike(bike);
         return ResponseEntity.ok(savedBike);
     }

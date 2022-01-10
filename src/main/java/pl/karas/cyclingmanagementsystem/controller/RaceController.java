@@ -50,6 +50,17 @@ public class RaceController {
 
     @PostMapping("/races")
     public ResponseEntity<Race> saveRace(@RequestBody Race race){
+        if(race.getCategories() != null){
+            Set<Category> categoriesToSave = new HashSet<>();
+            race.getCategories().forEach(cat -> {
+                Optional<Category> category = this.categoryService.getCategoryByName(cat.getName());
+                if(category.isPresent()){
+                    categoriesToSave.add(category.get());
+                }
+            });
+            race.setCategories(categoriesToSave);
+        }
+
         Address address = new Address();
         Address savedAddress = this.addressRepository.save(address);
 
@@ -88,8 +99,12 @@ public class RaceController {
 
     @DeleteMapping("/races/{id}")
     public ResponseEntity<String> deleteRaceById(@PathVariable Long id){
-        raceService.getRaceById(Long.valueOf(id));
-        return ResponseEntity.ok().build();
+        Optional<Race> optRace = raceService.getRaceById(Long.valueOf(id));
+        if(optRace.isPresent()) {
+            this.raceService.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/races/{id}/riders")

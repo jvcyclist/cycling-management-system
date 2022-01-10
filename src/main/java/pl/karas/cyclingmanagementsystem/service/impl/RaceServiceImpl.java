@@ -48,4 +48,9 @@ public class RaceServiceImpl implements RaceService {
         return raceRepository.findByStartDateBetween(todayDate, maxDate);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        this.raceRepository.deleteById(id);
+    }
+
 }

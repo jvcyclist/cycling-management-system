@@ -52,4 +52,9 @@ public class Rider {
             inverseJoinColumns = {@JoinColumn(name = "journeys_id")})
     private List<Journey> journeys;
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "rider", targetEntity = BikeUsageHistory.class)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<BikeUsageHistory> bikeUsageHistories;
+
 }
